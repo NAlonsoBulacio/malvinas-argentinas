@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Malvinas Argentinas — Demo Talleres y Salud</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <div class="demo">
+      <aside class="demo-sidebar">
+        <p class="demo-badge">Prototipo · Demo mock</p>
+        <h1>Talleres y Salud</h1>
+        <p class="demo-sub">
+          <strong>Talleres:</strong> prototipo Figma interactivo (tocá dentro del celular) o capturas PNG.
+          <strong>Salud / Perfil:</strong> tabs abajo del mockup.
+        </p>
+        <ol class="screen-list" id="screen-list"></ol>
+        <p class="demo-hint">Flechas ← → con foco en la página · servidor local recomendado</p>
+        <p class="demo-figma-note">
+          Exportación automática desde Figma bloqueada: compartí el archivo con
+          <code>ginkgodevs@gmail.com</code> como editor para traer todas las pantallas vía MCP.
+        </p>
+      </aside>
+
+      <main class="demo-stage">
+        <div class="phone" id="phone">
+          <div class="phone-frame">
+            <div class="phone-island"></div>
+            <div id="app-root" class="app-root"></div>
+          </div>
+        </div>
+
+        <nav class="demo-phone-nav" id="phone-external-nav" aria-label="Navegación de capturas" hidden>
+          <button type="button" class="nav-btn" id="ext-prev" aria-label="Pantalla anterior">←</button>
+          <span id="ext-label" class="demo-phone-label"></span>
+          <button type="button" class="nav-btn" id="ext-next" aria-label="Pantalla siguiente">→</button>
+        </nav>
+        <p class="demo-phone-help" id="phone-help"></p>
+      </main>
+    </div>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="data/mock.js"></script>
+    <script src="screens.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
