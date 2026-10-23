@@ -1,118 +1,94 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { profesionales, salitas, zonas } from "@/lib/data";
-import { especialidadesDe, FRANJAS, fmtDia, proximoTurno } from "@/lib/salud";
-import { useStore } from "@/components/store";
+import { useState } from "react";
+import { Icon } from "@/components/icons";
+import { StatusBar } from "@/components/chrome";
+import { useApp } from "@/components/app-state";
 
-const SaludMap = dynamic(() => import("@/components/SaludMap"), { ssr: false });
-
-export default function SaludPage() {
+export default function LoginPage() {
   const router = useRouter();
-  const { turnos } = useStore();
-  const [zona, setZona] = useState("");
-  const [especialidad, setEspecialidad] = useState("");
-  const [q, setQ] = useState("");
-  const [franja, setFranja] = useState("");
+  const { login } = useApp();
+  const [dni, setDni] = useState("");
+  const [pass, setPass] = useState("");
+  const [show, setShow] = useState(false);
+  const [error, setError] = useState("");
 
-  const especialidades = useMemo(
-    () => [...new Set(profesionales.map((p) => p.especialidad))].sort((a, b) => a.localeCompare(b, "es")),
-    []
-  );
-
-  const filtered = useMemo(() => {
-    const query = q.trim().toLowerCase();
-    return salitas.filter((s) => {
-      if (zona && s.zona !== zona) return false;
-      if (especialidad && !especialidadesDe(profesionales, s.id).includes(especialidad)) return false;
-      if (query && !`${s.nombre} ${s.centro} ${s.direccion} ${s.zona}`.toLowerCase().includes(query)) return false;
-      if (franja && !proximoTurno(turnos, profesionales, s.id, especialidad, franja)) return false;
-      return true;
-    });
-  }, [zona, especialidad, q, franja, turnos]);
+  function submit(e) {
+    e.preventDefault();
+    if (!/^\d{7,8}$/.test(dni)) {
+      setError("Ingresá tu DNI sin puntos ni espacios.");
+      return;
+    }
+    if (pass.length < 4) {
+      setError("La contraseña es demasiado corta.");
+      return;
+    }
+    router.push(login(dni));
+  }
 
   return (
-    <main className="page">
-      <div className="hero">
-        <h1>Salitas de salud</h1>
-        <p>Elegí un centro en el mapa o filtrá por zona, especialidad y horario.</p>
-      </div>
-
-      <div className="filters">
-        <label className="field">
-          <span>Horario</span>
-          <div className="chips">
-            {FRANJAS.map((f) => (
-              <button
-                key={f.id || "all"}
-                type="button"
-                className={franja === f.id ? "chip on" : "chip"}
-                onClick={() => setFranja(f.id)}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-        </label>
-        <label className="field">
-          <span>Zona</span>
-          <select value={zona} onChange={(e) => setZona(e.target.value)}>
-            <option value="">Todas las zonas</option>
-            {zonas.map((z) => (
-              <option key={z} value={z}>{z}</option>
-            ))}
-          </select>
-        </label>
-        <label className="field">
-          <span>Especialidad</span>
-          <select value={especialidad} onChange={(e) => setEspecialidad(e.target.value)}>
-            <option value="">Todas</option>
-            {especialidades.map((e) => (
-              <option key={e} value={e}>{e}</option>
-            ))}
-          </select>
-        </label>
-        <label className="field" style={{ gridColumn: "1 / -1" }}>
-          <span>Ubicación</span>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Dirección, centro o barrio" />
-        </label>
-      </div>
-
-      <div className="layout">
-        <section className="cards" aria-label="Listado de salitas">
-          <p className="muted" style={{ marginTop: 0 }}>
-            {filtered.length === 1 ? "1 salita" : `${filtered.length} salitas`}
+    <div className="phone">
+      <div className="login">
+        <StatusBar />
+        <div className="blob a" />
+        <div className="blob b" />
+        <div className="blob c" />
+        <div className="login-brand">
+          <span className="logo-badge">
+            <img src="/figma/logo.png" alt="Municipalidad de Malvinas Argentinas" />
+          </span>
+          <div className="muni">Malvinas Argentinas</div>
+          <h1>Talleres Culturales</h1>
+          <p>
+            Tu lugar para aprender y compartir.
+            <br />
+            Accedé a toda la oferta cultural
+            <br />
+            de tu municipio.
           </p>
-          {filtered.map((s) => {
-            const next = proximoTurno(turnos, profesionales, s.id, especialidad, franja);
-            const tags = [...new Set(especialidadesDe(profesionales, s.id))];
-            return (
-              <Link key={s.id} href={"/salita/" + s.id} className="card">
-                <div className="card-top">
-                  <h2>{s.nombre}</h2>
-                  <span className="pill">{s.distanciaKm} km</span>
-                </div>
-                <p className="muted">{s.centro} · {s.zona}</p>
-                <p className="small">{s.direccion} · {s.horario}</p>
-                <p className="next">
-                  {next ? `Próximo turno: ${fmtDia(next.fecha)} · ${next.hora} hs` : "Sin turnos en ese horario"}
-                </p>
-                <div className="tags">
-                  {tags.map((t) => (
-                    <span key={t} className="tag">{t}</span>
-                  ))}
-                </div>
-              </Link>
-            );
-          })}
-          {filtered.length === 0 && <p className="empty">Ninguna salita coincide con esos filtros.</p>}
-        </section>
-        <SaludMap points={filtered} onSelect={(id) => router.push("/salita/" + id)} />
+        </div>
+        <form className="login-card" onSubmit={submit}>
+          <div>
+            <h2>Bienvenido Vecino!</h2>
+            <p className="sub">Ingresá tus datos para continuar</p>
+          </div>
+          <div className="field">
+            <label htmlFor="dni">Número de DNI</label>
+            <div className="control">
+              <input id="dni" inputMode="numeric" placeholder="Ej: 12345678" value={dni} onChange={(e) => setDni(e.target.value.replace(/\D/g, "").slice(0, 8))} />
+              <span className="trail"><Icon name="id" size={18} /></span>
+            </div>
+            <span className="hint">Ingresá tu número sin puntos ni espacios</span>
+          </div>
+          <div className="field">
+            <label htmlFor="pass">Contraseña</label>
+            <div className="control">
+              <input id="pass" type={show ? "text" : "password"} placeholder="********" value={pass} onChange={(e) => setPass(e.target.value)} />
+              <button type="button" className="trail" onClick={() => setShow((v) => !v)} aria-label={show ? "Ocultar contraseña" : "Mostrar contraseña"}>
+                <Icon name={show ? "eye-off" : "eye"} size={18} />
+              </button>
+            </div>
+          </div>
+          {error && <p className="hint" style={{ color: "var(--danger)" }}>{error}</p>}
+          <button className="btn" type="submit">
+            Ingresar con mi DNI <Icon name="arrow" size={18} />
+          </button>
+          <div className="center">
+            <p className="lead">¿Aún no tenés cuenta?</p>
+            <Link className="link" href="/registro">Registrarme</Link>
+          </div>
+          <div className="trust">
+            <Icon name="shield" size={14} /> Sitio oficial de la Municipalidad
+          </div>
+          <p className="center" style={{ margin: 0 }}>
+            <Link href="/gestion" onClick={(e) => { e.preventDefault(); router.push(login("00000000")); }} className="hint link">
+              Acceso gestión
+            </Link>
+          </p>
+        </form>
       </div>
-      <p className="foot">Demo municipal · datos ficticios</p>
-    </main>
+    </div>
   );
 }

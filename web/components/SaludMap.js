@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import "leaflet/dist/leaflet.css";
 import { mapCenter } from "@/lib/data";
 
 export default function SaludMap({ points, onSelect }) {

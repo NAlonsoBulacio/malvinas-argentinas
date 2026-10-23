@@ -1,19 +1,24 @@
-import { Shell } from "@/components/Shell";
-import { StoreProvider } from "@/components/store";
+import { Roboto } from "next/font/google";
+import { AppStateProvider } from "@/components/app-state";
 import "./globals.css";
 
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
 export const metadata = {
-  title: "Malvinas Argentinas — Salud",
-  description: "Reservá turnos en salitas municipales y gestioná tu perfil de salud.",
+  title: "Malvinas Argentinas — Talleres Culturales",
+  description: "Oferta cultural municipal de Malvinas Argentinas.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body>
-        <StoreProvider>
-          <Shell>{children}</Shell>
-        </StoreProvider>
+      <body className={roboto.className}>
+        <AppStateProvider>
+          <div className="stage">{children}</div>
+        </AppStateProvider>
       </body>
     </html>
   );
