@@ -28,7 +28,7 @@ export default function ReservasPage() {
           </article>
         ))}
         {reservas.length === 0 && <p className="note">Todavía no tenés reservas.</p>}
-        <Link href="/salud" className="btn">Buscar un turno</Link>
+        <Link href="/salud/salitas" className="btn">Buscar un turno</Link>
       </div>
     </Screen>
   );

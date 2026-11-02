@@ -26,6 +26,51 @@ export function especialidadesDe(profesionales, salitaId) {
   return profesionales.filter((p) => p.salitaId === salitaId).map((p) => p.especialidad);
 }
 
+export function hoyISO() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+export function diasHasta(iso, desde = hoyISO()) {
+  const [y, m, d] = String(iso).split("-").map(Number);
+  const [y2, m2, d2] = String(desde).split("-").map(Number);
+  return Math.round((Date.UTC(y, m - 1, d) - Date.UTC(y2, m2 - 1, d2)) / 86400000);
+}
+
+export function estadoVacuna(v) {
+  if (!v?.proximaDosis) return "al-dia";
+  const dias = diasHasta(v.proximaDosis);
+  if (dias < 0) return "vencida";
+  if (dias <= 45) return "proxima";
+  return "al-dia";
+}
+
+export function textoProxima(iso) {
+  const n = diasHasta(iso);
+  if (n < 0) {
+    const a = Math.abs(n);
+    return a === 1 ? "Venció ayer" : `Venció hace ${a} días`;
+  }
+  if (n === 0) return "Te toca hoy";
+  if (n === 1) return "Te toca mañana";
+  return `Te toca en ${n} días`;
+}
+
+export function etiquetaVacuna(estado) {
+  if (estado === "vencida") return "Dosis vencida";
+  if (estado === "proxima") return "Próxima dosis";
+  return "Al día";
+}
+
+export function etiquetaEstudio(estado) {
+  if (estado === "pedido") return "Pedido";
+  if (estado === "con-turno") return "Con turno";
+  return "Resultado listo";
+}
+
 export function proximoTurno(turnos, profesionales, salitaId, especialidad, franja) {
   const ids = new Set(
     profesionales

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { reservasIniciales, turnosIniciales, vacunasIniciales } from "@/lib/data";
+import { estudiosIniciales, reservasIniciales, turnosIniciales, vacunasIniciales } from "@/lib/data";
 import { alumnos as alumnosSeed, talleres, VECINO } from "@/lib/talleres";
 
 const Ctx = createContext(null);
@@ -21,6 +21,8 @@ const inicial = {
   turnos: turnosIniciales,
   reservas: reservasIniciales,
   vacunas: vacunasIniciales,
+  estudios: estudiosIniciales,
+  saludVersion: 2,
   toast: "",
 };
 
@@ -31,7 +33,19 @@ export function AppStateProvider({ children }) {
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(KEY);
-      if (raw) setState((s) => ({ ...s, ...JSON.parse(raw), toast: "" }));
+      if (raw) {
+        const saved = JSON.parse(raw);
+        setState((s) => {
+          const next = { ...s, ...saved, toast: "" };
+          if (saved.saludVersion !== 2) {
+            next.vacunas = vacunasIniciales;
+            next.estudios = estudiosIniciales;
+            next.saludVersion = 2;
+          }
+          if (!next.estudios) next.estudios = estudiosIniciales;
+          return next;
+        });
+      }
     } catch {
       /* sesión vacía */
     }
@@ -175,8 +189,23 @@ export function AppStateProvider({ children }) {
       registrarVacuna(vacuna) {
         patch((s) => ({
           ...s,
-          vacunas: [{ ...vacuna, id: "vac-" + Date.now(), proximaDosis: null }, ...(s.vacunas || vacunasIniciales)],
+          vacunas: [{ ...vacuna, id: "vac-" + Date.now(), proximaDosis: vacuna.proximaDosis || null }, ...(s.vacunas || vacunasIniciales)],
           toast: "Vacuna registrada",
+        }));
+      },
+      registrarEstudioHecho(id) {
+        patch((s) => ({
+          ...s,
+          estudios: (s.estudios || estudiosIniciales).map((e) =>
+            e.id === id
+              ? {
+                  ...e,
+                  estado: "resultado",
+                  resultado: e.resultado || "Concurriste al estudio. El centro va a publicar el informe en esta sección.",
+                }
+              : e
+          ),
+          toast: "Estudio marcado como realizado",
         }));
       },
     };

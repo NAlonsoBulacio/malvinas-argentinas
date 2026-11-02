@@ -12,11 +12,11 @@ export default function SalitaPage() {
   const pros = profesionales.filter((p) => p.salitaId === id);
 
   if (!salita) {
-    return <Screen header="back" active="salud" back="/salud"><p className="note">No encontramos esa salita.</p></Screen>;
+    return <Screen header="back" active="salud" back="/salud/salitas"><p className="note">No encontramos esa salita.</p></Screen>;
   }
 
   return (
-    <Screen header="back" active="salud" back="/salud">
+    <Screen header="back" active="salud" back="/salud/salitas">
       <div className="stack">
         <div>
           <h1 className="h1">{salita.nombre}</h1>
