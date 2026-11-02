@@ -154,9 +154,10 @@ export const historialClinico = [
 ];
 
 export const vacunasIniciales = [
-  { id: "vac-1", nombre: "Antigripal", dosis: "Anual 2026", fechaAplicada: "2026-04-10", proximaDosis: "2027-04-10", centro: "CAPS Grand Bourg" },
+  { id: "vac-1", nombre: "Antigripal", dosis: "Anual 2026", fechaAplicada: "2026-04-10", proximaDosis: "2026-11-18", centro: "CAPS Grand Bourg" },
   { id: "vac-2", nombre: "COVID-19", dosis: "Refuerzo", fechaAplicada: "2025-11-02", proximaDosis: null, centro: "Hospital Municipal Norte" },
   { id: "vac-3", nombre: "Hepatitis B", dosis: "3ª dosis", fechaAplicada: "2024-08-15", proximaDosis: null, centro: "CAPS Grand Bourg" },
+  { id: "vac-4", nombre: "Doble adultos (dT)", dosis: "Refuerzo", fechaAplicada: "2016-03-12", proximaDosis: "2026-10-01", centro: "Hospital Municipal Norte" },
 ];
 
 export const vacunasDisponibles = [
@@ -166,6 +167,7 @@ export const vacunasDisponibles = [
   "DTPa",
   "Sarampión · Paperas · Rubéola",
   "Fiebre amarilla",
+  "Doble adultos (dT)",
 ];
 
 export const reservasIniciales = [
@@ -178,5 +180,77 @@ export const reservasIniciales = [
     fecha: "2026-09-20",
     hora: "10:30",
     estado: "Completada",
+  },
+];
+
+export const avisosVacunacion = [
+  {
+    id: "av-1",
+    titulo: "Campaña antigripal 2026",
+    fecha: "2026-11-01",
+    audiencia: "Mayores de 65, embarazadas, niñez y personas con factores de riesgo",
+    texto: "Ya podés darte la antigripal sin turno en los CAPS del municipio, de 8 a 14. Llevá DNI y, si tenés, el carnet de vacunación.",
+    lugar: "Todos los CAPS",
+    vigencia: "Hasta el 30 de noviembre",
+  },
+  {
+    id: "av-2",
+    titulo: "Refuerzo de doble adultos",
+    fecha: "2026-10-20",
+    audiencia: "Personas con la última dosis de dT hace más de 10 años",
+    texto: "Enfermería está aplicando el refuerzo de doble adultos. Si tu carnet figura vencido, acercate al vacunatorio de tu zona.",
+    lugar: "Salitas de enfermería",
+    vigencia: "Turno o demanda según el centro",
+  },
+  {
+    id: "av-3",
+    titulo: "Vacuna contra el dengue",
+    fecha: "2026-10-15",
+    audiencia: "Personas de 15 a 59 años",
+    texto: "Está disponible la primera dosis en el Hospital Municipal Norte. Conviene reservar turno en la salita de vacunación.",
+    lugar: "Hospital Municipal Norte",
+    vigencia: "Cupos semanales",
+  },
+];
+
+export const estudiosIniciales = [
+  {
+    id: "est-1",
+    nombre: "Laboratorio de rutina",
+    detalle: "Hemograma, glucemia y colesterol",
+    pedidoPor: "Dra. Carla Ruiz",
+    especialidad: "Clínica médica",
+    fechaPedido: "2026-10-28",
+    centro: "CAPS Grand Bourg",
+    estado: "pedido",
+    preparacion: "Ayuno de 8 horas. Podés tomar agua. Llevá DNI y la orden.",
+    turno: null,
+    resultado: null,
+  },
+  {
+    id: "est-2",
+    nombre: "Electrocardiograma",
+    detalle: "Control cardiológico de seguimiento",
+    pedidoPor: "Dr. Martín Soto",
+    especialidad: "Cardiología",
+    fechaPedido: "2026-10-20",
+    centro: "Hospital Municipal Norte",
+    estado: "con-turno",
+    preparacion: "No requiere ayuno. Llegá 15 minutos antes y evitá café esa mañana.",
+    turno: { fecha: "2026-11-06", hora: "09:30" },
+    resultado: null,
+  },
+  {
+    id: "est-3",
+    nombre: "Radiografía de tórax",
+    detalle: "Frente y perfil",
+    pedidoPor: "Dr. Diego Acosta",
+    especialidad: "Medicina general",
+    fechaPedido: "2026-09-02",
+    centro: "Hospital Municipal Norte",
+    estado: "resultado",
+    preparacion: "Sin preparación previa.",
+    turno: { fecha: "2026-09-10", hora: "11:00" },
+    resultado: "Sin hallazgos agudos. El informe queda disponible en el centro y en esta sección.",
   },
 ];

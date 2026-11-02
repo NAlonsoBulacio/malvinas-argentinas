@@ -14,8 +14,9 @@ const LINKS = [
 
 const SALUD = [
   { href: "/salud/reservas", label: "Mis reservas de salud" },
-  { href: "/salud/historial", label: "Historial clínico" },
   { href: "/salud/vacunas", label: "Vacunación" },
+  { href: "/salud/estudios", label: "Estudios pedidos" },
+  { href: "/salud/historial", label: "Historial clínico" },
 ];
 
 export default function PerfilPage() {
